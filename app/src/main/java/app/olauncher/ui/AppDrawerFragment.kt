@@ -183,14 +183,19 @@ class AppDrawerFragment : Fragment() {
                 binding.appDrawerTip.isSelected = true
             }
         }
-        if (flag == Constants.FLAG_HIDDEN_APPS)
+        if (flag == Constants.FLAG_HIDDEN_APPS) {
             viewModel.hiddenApps.observe(viewLifecycleOwner) {
                 it?.let { adapter.setAppList(it.toMutableList()) }
             }
-        else
+        }
+        else {
             viewModel.appList.observe(viewLifecycleOwner) {
-                it?.let { adapter.setAppList(it.toMutableList()) }
+                it?.let {
+                    adapter.setAppList(it.toMutableList())
+                    adapter.filter.filter(binding.search.query)
+                }
             }
+        }
     }
 
     private fun initClickListeners() {
